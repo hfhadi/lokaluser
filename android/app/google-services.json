@@ -1,0 +1,191 @@
+{
+  "project_info": {
+    "project_number": "242720635019",
+    "firebase_url": "https://geetaxi-15c74.firebaseio.com",
+    "project_id": "geetaxi-15c74",
+    "storage_bucket": "geetaxi-15c74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242720635019:android:89ec0951e876ba0a363c8e",
+        "android_client_info": {
+          "package_name": "com.fapp4you.cabdriver.cabDriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuF-MWNKVreYgafFGSjcixUZVw0kgTkvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242720635019-204d580mnkj8md2bgs5uuf6v2d5teccj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mynoor.myzaynab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242720635019:android:458a6ec5357e131c363c8e",
+        "android_client_info": {
+          "package_name": "com.fapp4you.local_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuF-MWNKVreYgafFGSjcixUZVw0kgTkvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242720635019-204d580mnkj8md2bgs5uuf6v2d5teccj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mynoor.myzaynab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242720635019:android:c4a3a349cbf372a3363c8e",
+        "android_client_info": {
+          "package_name": "com.fapp4you.localdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuF-MWNKVreYgafFGSjcixUZVw0kgTkvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242720635019-204d580mnkj8md2bgs5uuf6v2d5teccj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mynoor.myzaynab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242720635019:android:e98dd482aa086e3e363c8e",
+        "android_client_info": {
+          "package_name": "com.fapp4you.localuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuF-MWNKVreYgafFGSjcixUZVw0kgTkvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242720635019-204d580mnkj8md2bgs5uuf6v2d5teccj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mynoor.myzaynab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242720635019:android:534c621784e13938363c8e",
+        "android_client_info": {
+          "package_name": "com.fapp4you.lokaluser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuF-MWNKVreYgafFGSjcixUZVw0kgTkvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242720635019-5vacrtrninfo27l2g4ltoudm6962bomb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242720635019-204d580mnkj8md2bgs5uuf6v2d5teccj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mynoor.myzaynab"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
