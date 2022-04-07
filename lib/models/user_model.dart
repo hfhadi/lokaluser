@@ -15,7 +15,7 @@ class UserModel {
 
   UserModel.fromSnapshot(DataSnapshot snap) {
     phone = (snap.value as dynamic)["phone"];
-    name = (snap.value as dynamic)["fullname"];
+    name = (snap.value as dynamic)["name"];
     id = snap.key;
     email = (snap.value as dynamic)["email"];
   }
