@@ -4,32 +4,29 @@ import 'package:lokaluser/authentication/login_screen.dart';
 import 'package:lokaluser/global/global.dart';
 import 'package:lokaluser/mainScreens/main_screen.dart';
 
+import '../assistants/assistant_methods.dart';
 
-class MySplashScreen extends StatefulWidget
-{
+class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
 
   @override
   _MySplashScreenState createState() => _MySplashScreenState();
 }
 
+class _MySplashScreenState extends State<MySplashScreen> {
+  startTimer() {
+    fAuth.currentUser != null
+        ? AssistantMethods.readCurrentOnlineUserInfo()
+        : null;
 
-
-class _MySplashScreenState extends State<MySplashScreen>
-{
-
-  startTimer()
-  {
-    Timer(const Duration(seconds: 3), () async
-    {
-      if(await fAuth.currentUser != null)
-      {
+    Timer(const Duration(seconds: 3), () async {
+      if (await fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> MainScreen()));
-      }
-      else
-      {
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> LoginScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => MainScreen()));
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => LoginScreen()));
       }
     });
   }
@@ -37,13 +34,12 @@ class _MySplashScreenState extends State<MySplashScreen>
   @override
   void initState() {
     super.initState();
-    
+
     startTimer();
   }
-  
+
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Material(
       child: Container(
         color: Colors.black,
@@ -51,20 +47,17 @@ class _MySplashScreenState extends State<MySplashScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               Image.asset("images/logo.png"),
-
-              const SizedBox(height: 10,),
-
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 "Uber & inDriver Clone App",
                 style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
-
             ],
           ),
         ),

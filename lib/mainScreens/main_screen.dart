@@ -6,6 +6,8 @@ import 'package:lokaluser/assistants/assistant_methods.dart';
 import 'package:lokaluser/authentication/login_screen.dart';
 import 'package:lokaluser/global/global.dart';
 
+import '../widgets/my_drawer.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -19,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     target: LatLng(55.7232834, 12.4837418),
     zoom: 17,
   );
-
+  GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   blackThemeGoogleMap() {
     newGoogleMapController!.setMapStyle('''
                     [
@@ -196,6 +198,19 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: sKey,
+      drawer: Container(
+        width: 265,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.black,
+          ),
+          child: MyDrawer(
+            name: userModelCurrentInfo!.name,
+            email: userModelCurrentInfo!.email,
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           GoogleMap(
@@ -209,6 +224,24 @@ class _MainScreenState extends State<MainScreen> {
               //for black theme google map
               blackThemeGoogleMap();
             },
+          ),
+
+          //custom hamburger button for drawer
+          Positioned(
+            top: 30,
+            left: 14,
+            child: GestureDetector(
+              onTap: () {
+                sKey.currentState!.openDrawer();
+              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.grey,
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
           ),
         ],
       ),
