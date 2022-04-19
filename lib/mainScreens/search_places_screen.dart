@@ -131,7 +131,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             ),
 
             //display place predictions result
-            (placesPredictedList.isNotEmpty)
+            (placesPredictedList.length > 0)
                 ? Expanded(
                     child: ListView.separated(
                       itemCount: placesPredictedList.length,

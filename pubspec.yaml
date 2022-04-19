@@ -45,7 +45,9 @@ dependencies:
   google_maps_flutter:
   google_maps_flutter_web:
   http: ^0.13.4
-  provider: 
+  provider:
+  flutter_polyline_points:
+
 
 dev_dependencies:
   change_app_package_name: ^1.0.0
