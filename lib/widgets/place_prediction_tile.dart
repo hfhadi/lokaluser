@@ -17,7 +17,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) => ProgressDialog(
-        message: "Setting Up Drof-Off, Please wait...",
+        message: "Please wait...",
       ),
     );
 

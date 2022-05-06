@@ -47,6 +47,9 @@ dependencies:
   http: ^0.13.4
   provider:
   flutter_polyline_points:
+  flutter_geofire: ^2.0.1
+  smooth_star_rating_nsafe:
+  geoflutterfire:
 
 
 dev_dependencies:
