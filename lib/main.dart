@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lokaluser/InfoHandler/app_info.dart';
-import 'package:lokaluser/send_fcm.dart';
 import 'package:lokaluser/splashScreen/splash_screen.dart';
 import 'package:provider/provider.dart';
 

@@ -5,27 +5,32 @@ import 'package:provider/provider.dart';
 
 import '../InfoHandler/app_info.dart';
 import '../assistants/request_assistant.dart';
+import '../global/global.dart';
 import '../global/map_key.dart';
 import '../models/directions.dart';
 
-class PlacePredictionTileDesign extends StatelessWidget {
+class PlacePredictionTileDesign extends StatefulWidget {
   final PredictedPlaces? predictedPlaces;
 
   PlacePredictionTileDesign({this.predictedPlaces});
 
+  @override
+  State<PlacePredictionTileDesign> createState() => _PlacePredictionTileDesignState();
+}
+
+class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
   getPlaceDirectionDetails(String? placeId, context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) => ProgressDialog(
-        message: "Please wait...",
+        message: "Setting Up Drof-Off, Please wait...",
       ),
     );
 
     String placeDirectionDetailsUrl =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$mapKey";
 
-    var responseApi =
-        await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
+    var responseApi = await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
 
     Navigator.pop(context);
 
@@ -37,13 +42,14 @@ class PlacePredictionTileDesign extends StatelessWidget {
       Directions directions = Directions();
       directions.locationName = responseApi["result"]["name"];
       directions.locationId = placeId;
-      directions.locationLatitude =
-          responseApi["result"]["geometry"]["location"]["lat"];
-      directions.locationLongitude =
-          responseApi["result"]["geometry"]["location"]["lng"];
+      directions.locationLatitude = responseApi["result"]["geometry"]["location"]["lat"];
+      directions.locationLongitude = responseApi["result"]["geometry"]["location"]["lng"];
 
-      Provider.of<AppInfo>(context, listen: false)
-          .updateDropOffLocationAddress(directions);
+      Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
+
+      setState(() {
+        userDropOffAddress = directions.locationName!;
+      });
 
       Navigator.pop(context, "obtainedDropoff");
     }
@@ -53,7 +59,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        getPlaceDirectionDetails(predictedPlaces!.place_id, context);
+        getPlaceDirectionDetails(widget.predictedPlaces!.place_id, context);
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.white24,
@@ -77,7 +83,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
                     height: 8.0,
                   ),
                   Text(
-                    predictedPlaces!.main_text!,
+                    widget.predictedPlaces!.main_text!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16.0,
@@ -88,7 +94,7 @@ class PlacePredictionTileDesign extends StatelessWidget {
                     height: 2.0,
                   ),
                   Text(
-                    predictedPlaces!.secondary_text!,
+                    widget.predictedPlaces!.secondary_text!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 12.0,

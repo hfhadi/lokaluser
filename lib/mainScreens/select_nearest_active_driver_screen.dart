@@ -1,48 +1,39 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'package:lokaluser/assistants/assistant_methods.dart';
 import 'package:lokaluser/global/global.dart';
 
 class SelectNearestActiveDriversScreen extends StatefulWidget {
   DatabaseReference? referenceRideRequest;
+
   SelectNearestActiveDriversScreen({this.referenceRideRequest});
 
   @override
-  _SelectNearestActiveDriversScreenState createState() =>
-      _SelectNearestActiveDriversScreenState();
+  _SelectNearestActiveDriversScreenState createState() => _SelectNearestActiveDriversScreenState();
 }
 
-class _SelectNearestActiveDriversScreenState
-    extends State<SelectNearestActiveDriversScreen> {
+class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDriversScreen> {
   String fareAmount = "";
 
   getFareAmountAccordingToVehicleType(int index) {
     if (tripDirectionDetailsInfo != null) {
       if (dList[index]["car_details"]["type"].toString() == "bike") {
-        fareAmount =
-            (AssistantMethods.calculateFareAmountFromOriginToDestination(
-                        tripDirectionDetailsInfo!) /
-                    2)
-                .toStringAsFixed(1);
+        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) / 2)
+            .toStringAsFixed(1);
       }
       if (dList[index]["car_details"]["type"].toString() ==
           "uber-x") //means executive type of car - more comfortable pro level
       {
-        fareAmount =
-            (AssistantMethods.calculateFareAmountFromOriginToDestination(
-                        tripDirectionDetailsInfo!) *
-                    2)
-                .toStringAsFixed(1);
+        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 2)
+            .toStringAsFixed(1);
       }
-      if (dList[index]["car_details"]["type"].toString() ==
-          "uber-go") // non - executive car - comfortable
+      if (dList[index]["car_details"]["type"].toString() == "uber-go") // non - executive car - comfortable
       {
         fareAmount =
-            (AssistantMethods.calculateFareAmountFromOriginToDestination(
-                    tripDirectionDetailsInfo!))
-                .toString();
+            (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!)).toString();
       }
     }
     return fareAmount;
@@ -65,7 +56,9 @@ class _SelectNearestActiveDriversScreenState
           onPressed: () {
             //delete/remove the ride request from database
             widget.referenceRideRequest!.remove();
-            Navigator.pop(context);
+            Fluttertoast.showToast(msg: "you have cancelled the ride request.");
+
+            SystemNavigator.pop();
           },
         ),
       ),
@@ -88,9 +81,7 @@ class _SelectNearestActiveDriversScreenState
                 leading: Padding(
                   padding: const EdgeInsets.only(top: 2.0),
                   child: Image.asset(
-                    "images/" +
-                        dList[index]["car_details"]["type"].toString() +
-                        ".png",
+                    "images/" + dList[index]["car_details"]["type"].toString() + ".png",
                     width: 70,
                   ),
                 ),
@@ -134,25 +125,15 @@ class _SelectNearestActiveDriversScreenState
                       height: 2,
                     ),
                     Text(
-                      tripDirectionDetailsInfo != null
-                          ? tripDirectionDetailsInfo!.duration_text!
-                          : "",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                          fontSize: 12),
+                      tripDirectionDetailsInfo != null ? tripDirectionDetailsInfo!.duration_text! : "",
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54, fontSize: 12),
                     ),
                     const SizedBox(
                       height: 2,
                     ),
                     Text(
-                      tripDirectionDetailsInfo != null
-                          ? tripDirectionDetailsInfo!.distance_text!
-                          : "",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                          fontSize: 12),
+                      tripDirectionDetailsInfo != null ? tripDirectionDetailsInfo!.distance_text! : "",
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54, fontSize: 12),
                     ),
                   ],
                 ),

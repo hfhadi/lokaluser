@@ -49,8 +49,8 @@ dependencies:
   flutter_polyline_points:
   flutter_geofire: ^2.0.1
   smooth_star_rating_nsafe:
-  geoflutterfire:
   firebase_messaging: ^11.3.0
+  animated_text_kit:
 
 
 dev_dependencies:
