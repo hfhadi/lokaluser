@@ -14,8 +14,11 @@ import '../models/direction_details_info.dart';
 import '../models/directions.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/trips_history_model.dart';
+
 class AssistantMethods {
-  static Future<String> searchAddressForGeographicCoOrdinates(Position position, context) async {
+  static Future<String> searchAddressForGeographicCoOrdinates(
+      Position position, context) async {
     String apiUrl =
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$mapKey";
     String humanReadableAddress = "";
@@ -30,7 +33,8 @@ class AssistantMethods {
       userPickUpAddress.locationLongitude = position.longitude;
       userPickUpAddress.locationName = humanReadableAddress;
 
-      Provider.of<AppInfo>(context, listen: false).updatePickUpLocationAddress(userPickUpAddress);
+      Provider.of<AppInfo>(context, listen: false)
+          .updatePickUpLocationAddress(userPickUpAddress);
     }
 
     return humanReadableAddress;
@@ -39,7 +43,10 @@ class AssistantMethods {
   static void readCurrentOnlineUserInfo() async {
     currentFirebaseUser = fAuth.currentUser;
 
-    DatabaseReference userRef = FirebaseDatabase.instance.ref().child("users").child(currentFirebaseUser!.uid);
+    DatabaseReference userRef = FirebaseDatabase.instance
+        .ref()
+        .child("users")
+        .child(currentFirebaseUser!.uid);
 
     userRef.once().then((snap) {
       if (snap.snapshot.value != null) {
@@ -48,40 +55,52 @@ class AssistantMethods {
     });
   }
 
-  static Future<DirectionDetailsInfo?> obtainOriginToDestinationDirectionDetails(
-      LatLng origionPosition, LatLng destinationPosition) async {
+  static Future<DirectionDetailsInfo?>
+      obtainOriginToDestinationDirectionDetails(
+          LatLng origionPosition, LatLng destinationPosition) async {
     String urlOriginToDestinationDirectionDetails =
         "https://maps.googleapis.com/maps/api/directions/json?origin=${origionPosition.latitude},${origionPosition.longitude}&destination=${destinationPosition.latitude},${destinationPosition.longitude}&key=$mapKey";
 
-    var responseDirectionApi = await RequestAssistant.receiveRequest(urlOriginToDestinationDirectionDetails);
+    var responseDirectionApi = await RequestAssistant.receiveRequest(
+        urlOriginToDestinationDirectionDetails);
 
     if (responseDirectionApi == "Error Occurred, Failed. No Response.") {
       return null;
     }
 
     DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
-    directionDetailsInfo.e_points = responseDirectionApi["routes"][0]["overview_polyline"]["points"];
+    directionDetailsInfo.e_points =
+        responseDirectionApi["routes"][0]["overview_polyline"]["points"];
 
-    directionDetailsInfo.distance_text = responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
-    directionDetailsInfo.distance_value = responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
+    directionDetailsInfo.distance_text =
+        responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
+    directionDetailsInfo.distance_value =
+        responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
 
-    directionDetailsInfo.duration_text = responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
-    directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+    directionDetailsInfo.duration_text =
+        responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
+    directionDetailsInfo.duration_value =
+        responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
 
     return directionDetailsInfo;
   }
 
-  static double calculateFareAmountFromOriginToDestination(DirectionDetailsInfo directionDetailsInfo) {
-    double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 0.1;
-    double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value! / 1000) * 0.1;
+  static double calculateFareAmountFromOriginToDestination(
+      DirectionDetailsInfo directionDetailsInfo) {
+    double timeTraveledFareAmountPerMinute =
+        (directionDetailsInfo.duration_value! / 60) * 0.1;
+    double distanceTraveledFareAmountPerKilometer =
+        (directionDetailsInfo.duration_value! / 1000) * 0.1;
 
     //USD
-    double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer;
+    double totalFareAmount = timeTraveledFareAmountPerMinute +
+        distanceTraveledFareAmountPerKilometer;
 
     return double.parse(totalFareAmount.toStringAsFixed(1));
   }
 
-  static sendNotificationToDriverNow(String deviceRegistrationToken, String userRideRequestId, context) async {
+  static sendNotificationToDriverNow(
+      String deviceRegistrationToken, String userRideRequestId, context) async {
     String destinationAddress = userDropOffAddress;
 
     Map<String, String> headerNotification = {
@@ -91,8 +110,7 @@ class AssistantMethods {
 
     Map bodyNotification = {
       "body": "Destination Address: \n$destinationAddress.",
-      "title": "New Trip Request",
-      "sound": "alert.caf"
+      "title": "New Trip Request"
     };
 
     Map dataMap = {
@@ -109,10 +127,64 @@ class AssistantMethods {
       "to": deviceRegistrationToken,
     };
 
-    var responseNotification = http.post(
+    http.post(
       Uri.parse("https://fcm.googleapis.com/fcm/send"),
       headers: headerNotification,
       body: jsonEncode(officialNotificationFormat),
     );
+  }
+
+  //retrieve the trips KEYS for online user
+  //trip key = ride request key
+  static void readTripsKeysForOnlineUser(context) {
+    FirebaseDatabase.instance
+        .ref()
+        .child("All Ride Requests")
+        .orderByChild("userName")
+        .equalTo(userModelCurrentInfo!.name)
+        .once()
+        .then((snap) {
+      if (snap.snapshot.value != null) {
+        Map keysTripsId = snap.snapshot.value as Map;
+
+        //count total number trips and share it with Provider
+        int overAllTripsCounter = keysTripsId.length;
+        Provider.of<AppInfo>(context, listen: false)
+            .updateOverAllTripsCounter(overAllTripsCounter);
+
+        //share trips keys with Provider
+        List<String> tripsKeysList = [];
+        keysTripsId.forEach((key, value) {
+          tripsKeysList.add(key);
+        });
+        Provider.of<AppInfo>(context, listen: false)
+            .updateOverAllTripsKeys(tripsKeysList);
+
+        //get trips keys data - read trips complete information
+        readTripsHistoryInformation(context);
+      }
+    });
+  }
+
+  static void readTripsHistoryInformation(context) {
+    var tripsAllKeys =
+        Provider.of<AppInfo>(context, listen: false).historyTripsKeysList;
+
+    for (String eachKey in tripsAllKeys) {
+      FirebaseDatabase.instance
+          .ref()
+          .child("All Ride Requests")
+          .child(eachKey)
+          .once()
+          .then((snap) {
+        var eachTripHistory = TripsHistoryModel.fromSnapshot(snap.snapshot);
+
+        if ((snap.snapshot.value as Map)["status"] == "ended") {
+          //update-add each history to OverAllTrips History Data List
+          Provider.of<AppInfo>(context, listen: false)
+              .updateOverAllTripsHistoryInformation(eachTripHistory);
+        }
+      });
+    }
   }
 }

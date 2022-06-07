@@ -18,17 +18,20 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
       String urlAutoCompleteSearch =
           "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inputText&key=$mapKey&components=country:IQ";
 
-      var responseAutoCompleteSearch = await RequestAssistant.receiveRequest(urlAutoCompleteSearch);
+      var responseAutoCompleteSearch =
+          await RequestAssistant.receiveRequest(urlAutoCompleteSearch);
 
-      if (responseAutoCompleteSearch == "Error Occurred, Failed. No Response.") {
+      if (responseAutoCompleteSearch ==
+          "Error Occurred, Failed. No Response.") {
         return;
       }
 
       if (responseAutoCompleteSearch["status"] == "OK") {
         var placePredictions = responseAutoCompleteSearch["predictions"];
 
-        var placePredictionsList =
-            (placePredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
+        var placePredictionsList = (placePredictions as List)
+            .map((jsonData) => PredictedPlaces.fromJson(jsonData))
+            .toList();
 
         setState(() {
           placesPredictedList = placePredictionsList;
@@ -127,7 +130,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           ),
 
           //display place predictions result
-          (placesPredictedList.length > 0)
+          (placesPredictedList.isNotEmpty)
               ? Expanded(
                   child: ListView.separated(
                     itemCount: placesPredictedList.length,

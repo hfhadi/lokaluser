@@ -51,6 +51,10 @@ dependencies:
   smooth_star_rating_nsafe:
   firebase_messaging: ^11.3.0
   animated_text_kit:
+  latlong2: ^0.8.1
+  map_picker: ^0.0.3
+  geocoding: ^2.0.1
+  
 
 
 dev_dependencies:

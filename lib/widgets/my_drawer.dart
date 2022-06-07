@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lokaluser/global/global.dart';
 import 'package:lokaluser/splashScreen/splash_screen.dart';
 
+import '../mainScreens/trips_history_screen.dart';
+
 class MyDrawer extends StatefulWidget {
   String? name;
   String? email;
@@ -68,7 +70,9 @@ class _MyDrawerState extends State<MyDrawer> {
 
           //drawer body
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (c) => TripsHistoryScreen()));
+            },
             child: const ListTile(
               leading: Icon(
                 Icons.history,
@@ -112,8 +116,7 @@ class _MyDrawerState extends State<MyDrawer> {
           GestureDetector(
             onTap: () {
               fAuth.signOut();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (c) => const MySplashScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
             },
             child: const ListTile(
               leading: Icon(

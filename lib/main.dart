@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lokaluser/InfoHandler/app_info.dart';
+import 'package:lokaluser/send_fcm.dart';
 import 'package:lokaluser/splashScreen/splash_screen.dart';
+import 'package:lokaluser/widgets/zone_widget.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -70,15 +72,15 @@ class _MyAppState extends State<MyApp> {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      /* options: const FirebaseOptions(
+    options: const FirebaseOptions(
         apiKey: "AIzaSyDbkI8uwv1xVSlIVV3I2dILxs9-foMdNgY",
         authDomain: "geetaxi-15c74.firebaseapp.com",
         databaseURL: "https://geetaxi-15c74.firebaseio.com",
         projectId: "geetaxi-15c74",
         storageBucket: "geetaxi-15c74.appspot.com",
         messagingSenderId: "242720635019",
-        appId: "1:242720635019:web:c2781e12c5e3b516363c8e"),*/
-      );
+        appId: "1:242720635019:web:c2781e12c5e3b516363c8e"),
+  );
 
   runApp(
     MyApp(
@@ -89,8 +91,9 @@ void main() async {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MySplashScreen(),
-          // const SendFcm(),
+          home: //const MySplashScreen(),
+              // const SendFcm(),
+              const ZoneWidget(),
           debugShowCheckedModeBanner: false,
         ),
       ),
