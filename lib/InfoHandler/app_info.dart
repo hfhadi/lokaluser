@@ -1,42 +1,77 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lokaluser/models/zone.dart';
 
 import '../models/directions.dart';
 import '../models/trips_history_model.dart';
 
-class AppInfo extends ChangeNotifier
-{
+class AppInfo extends ChangeNotifier {
   Directions? userPickUpLocation, userDropOffLocation;
   int countTotalTrips = 0;
   List<String> historyTripsKeysList = [];
   List<TripsHistoryModel> allTripsHistoryInformationList = [];
 
+  double _counter = 0;
 
-  void updatePickUpLocationAddress(Directions userPickUpAddress)
-  {
+  double get count => _counter;
+  Marker _marker = Marker(
+    markerId: MarkerId('salam'),
+    infoWindow: const InfoWindow(
+        title: 'Zone 5\n zone2\n zone3', snippet: "this is zone 5"),
+    position: LatLng(44.594863539518116, 44.01412402294828),
+  );
+
+  Marker get mark => _marker;
+
+  void updateMarker(Marker marker) {
+    _marker = marker;
+    notifyListeners();
+  }
+
+  void increment() {
+    _counter += 0.001;
+
+    notifyListeners();
+  }
+
+  void decrement() {
+    _counter -= 0.001;
+
+    notifyListeners();
+  }
+
+  void reset() {
+    _counter = 0;
+
+    notifyListeners();
+  }
+
+  void updatePickUpLocationAddress(Directions userPickUpAddress) {
     userPickUpLocation = userPickUpAddress;
     notifyListeners();
   }
 
-  void updateDropOffLocationAddress(Directions dropOffAddress)
-  {
+  void updateZone(Zone zone) {
+    zone = zone;
+    notifyListeners;
+  }
+
+  void updateDropOffLocationAddress(Directions dropOffAddress) {
     userDropOffLocation = dropOffAddress;
     notifyListeners();
   }
 
-  updateOverAllTripsCounter(int overAllTripsCounter)
-  {
+  updateOverAllTripsCounter(int overAllTripsCounter) {
     countTotalTrips = overAllTripsCounter;
     notifyListeners();
   }
 
-  updateOverAllTripsKeys(List<String> tripsKeysList)
-  {
+  updateOverAllTripsKeys(List<String> tripsKeysList) {
     historyTripsKeysList = tripsKeysList;
     notifyListeners();
   }
 
-  updateOverAllTripsHistoryInformation(TripsHistoryModel eachTripHistory)
-  {
+  updateOverAllTripsHistoryInformation(TripsHistoryModel eachTripHistory) {
     allTripsHistoryInformationList.add(eachTripHistory);
     notifyListeners();
   }

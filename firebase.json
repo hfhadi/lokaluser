@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "taxikarbala",
+    "site": "taxilokal",
     "public": "build/web",
     "ignore": [
       "firebase.json",

@@ -54,6 +54,11 @@ dependencies:
   latlong2: ^0.8.1
   map_picker: ^0.0.3
   geocoding: ^2.0.1
+  location: ^4.2.0
+  location_web:
+  google_maps_utils: ^1.5.0+0
+  google_maps_controller: ^1.2.0
+  google_maps_cluster_manager: ^3.0.0+1
   
 
 
