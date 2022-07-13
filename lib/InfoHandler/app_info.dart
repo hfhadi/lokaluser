@@ -14,19 +14,6 @@ class AppInfo extends ChangeNotifier {
   double _counter = 0;
 
   double get count => _counter;
-  Marker _marker = Marker(
-    markerId: MarkerId('salam'),
-    infoWindow: const InfoWindow(
-        title: 'Zone 5\n zone2\n zone3', snippet: "this is zone 5"),
-    position: LatLng(44.594863539518116, 44.01412402294828),
-  );
-
-  Marker get mark => _marker;
-
-  void updateMarker(Marker marker) {
-    _marker = marker;
-    notifyListeners();
-  }
 
   void increment() {
     _counter += 0.001;

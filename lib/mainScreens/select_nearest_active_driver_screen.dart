@@ -58,7 +58,7 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
             widget.referenceRideRequest!.remove();
             Fluttertoast.showToast(msg: "you have cancelled the ride request.");
 
-            SystemNavigator.pop();
+            Navigator.pop(context);
           },
         ),
       ),

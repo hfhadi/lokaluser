@@ -11,19 +11,22 @@ import '../models/directions.dart';
 
 class PlacePredictionTileDesign extends StatefulWidget {
   final PredictedPlaces? predictedPlaces;
+  final String? orgOrDes;
 
-  PlacePredictionTileDesign({this.predictedPlaces});
+  PlacePredictionTileDesign({this.predictedPlaces, this.orgOrDes});
 
   @override
   State<PlacePredictionTileDesign> createState() => _PlacePredictionTileDesignState();
 }
 
 class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
-  getPlaceDirectionDetails(String? placeId, context) async {
+  getPlaceDirectionDetails(String? placeId, String? orgOrDes, context) async {
     showDialog(
       context: context,
-      builder: (BuildContext context) => ProgressDialog(
-        message: "Setting Up Drof-Off, Please wait...",
+      builder: (BuildContext context) => Center(
+        child: ProgressDialog(
+          message: "Setting Up Drof-Off, Please wait...",
+        ),
       ),
     );
 
@@ -45,12 +48,24 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
       directions.locationLatitude = responseApi["result"]["geometry"]["location"]["lat"];
       directions.locationLongitude = responseApi["result"]["geometry"]["location"]["lng"];
 
-      Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
+      if (orgOrDes == 'origin') {
+        /* Directions? directions2 = Directions();
+        directions2 = null;
+        Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions2!);
+*/
+        Provider.of<AppInfo>(context, listen: false).updatePickUpLocationAddress(directions);
 
+        // Navigator.pop(context, "");
+        //  Provider.of<AppInfo>(context).userDropOffLocation!.locationName = '';
+        /*   Directions? directions2 = Directions();
+
+   */
+      } else {
+        Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
+      }
       setState(() {
         userDropOffAddress = directions.locationName!;
       });
-
       Navigator.pop(context, "obtainedDropoff");
     }
   }
@@ -59,7 +74,9 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        getPlaceDirectionDetails(widget.predictedPlaces!.place_id, context);
+        getPlaceDirectionDetails(widget.predictedPlaces!.place_id, widget.orgOrDes!, context);
+
+        //else()
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.white24,

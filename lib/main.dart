@@ -1,8 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lokaluser/InfoHandler/app_info.dart';
+import 'package:lokaluser/salam/getxml.dart';
 import 'package:lokaluser/salam/justmap.dart';
+import 'package:lokaluser/salam/main_screen2.dart';
+import 'package:lokaluser/salam/markerupdate.dart';
 import 'package:lokaluser/salam/mymap.dart';
+import 'package:lokaluser/salam/sortdriver.dart';
+import 'package:lokaluser/salam/thelocation.dart';
 import 'package:lokaluser/send_fcm.dart';
 import 'package:lokaluser/splashScreen/splash_screen.dart';
 import 'package:lokaluser/widgets/fetch_data.dart';
@@ -38,14 +43,22 @@ Future<void> main() async {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home:
-              //JustMap(),
-              //const MySplashScreen(),
-              // const SendFcm(),
-              // const ZoneWidget(),
-              // FetchData(),
-              const MyMap(),
-          // HomeScreen(),
+          home: //const SortDriver(),
+              // GetXml(),
+              //  const MarkerUpdate(),
+
+              ///life driver location for web
+              //   JustMap(),
+              //  const MainScreen2(),
+
+              const MySplashScreen(),
+          //  const SendFcm(),
+          //const TheLocation(),
+          //   const ZoneWidget(),
+          // FetchData(),
+          //   const MyMap(),/// not important
+          //  HomeScreen(),
+          // SendFcm(),
           debugShowCheckedModeBanner: false,
         ),
       ),

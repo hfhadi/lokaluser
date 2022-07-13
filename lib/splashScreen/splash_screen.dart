@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lokaluser/authentication/login_screen.dart';
 import 'package:lokaluser/global/global.dart';
 import 'package:lokaluser/mainScreens/main_screen.dart';
+import 'package:lokaluser/salam/main_screen2.dart';
 
 import '../assistants/assistant_methods.dart';
 
@@ -15,18 +16,14 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
-    fAuth.currentUser != null
-        ? AssistantMethods.readCurrentOnlineUserInfo()
-        : null;
+    fAuth.currentUser != null ? AssistantMethods.readCurrentOnlineUserInfo() : null;
 
-    Timer(const Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 1), () async {
       if (fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => MainScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
       } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => LoginScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
       }
     });
   }
@@ -52,11 +49,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 height: 10,
               ),
               const Text(
-                "Uber & inDriver Clone App",
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                "User App",
+                style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ],
           ),

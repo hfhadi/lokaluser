@@ -22,9 +22,7 @@ class _MyMapState extends State<MyMap> {
   late double a;
   Set<Marker> markersSet2 = {};
   Set<Marker> markersSet3 = {};
-  DatabaseReference ref = FirebaseDatabase.instance
-      .ref()
-      .child("activeDrivers/o0jKO5j8MNViFMmjjM5Yy9LZv6J2/map");
+  DatabaseReference ref = FirebaseDatabase.instance.ref().child("activeDrivers/o0jKO5j8MNViFMmjjM5Yy9LZv6J2/map");
 
   // GoogleMapController? newGoogleMapController;
 
@@ -39,7 +37,8 @@ class _MyMapState extends State<MyMap> {
   bool mBool = false;
 
   late Marker f;
-
+  Marker? m;
+  Marker? m2;
   getMarker() async {
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(25, 25)),
@@ -57,14 +56,9 @@ class _MyMapState extends State<MyMap> {
 
     f = Marker(
       markerId: MarkerId(myId + nameIndex.toString()),
-      position: LatLng(
-          32.594863539518116 +
-              Provider.of<AppInfo>(context, listen: false).count,
-          44.01412402294828),
+      position: LatLng(32.594863539518116 + Provider.of<AppInfo>(context, listen: false).count, 44.01412402294828),
       infoWindow: InfoWindow(
-          title:
-              'alibaba how are you ${Provider.of<AppInfo>(context, listen: false).count}',
-          snippet: "salam"),
+          title: 'alibaba how are you ${Provider.of<AppInfo>(context, listen: false).count}', snippet: "salam"),
       icon: mBool ? markerbitmap : markerbitmap2,
       //icon: BitmapDescriptor.fromBytes(bytes),
     );
@@ -89,9 +83,10 @@ class _MyMapState extends State<MyMap> {
     double lat;
     double long;
     print('Name of index ${nameIndex2}');
-    Marker? m;
+
     stream.listen((DatabaseEvent event) {
       markersSet2.remove(m);
+      markersSet2.remove(m2);
 
       nameIndex2++;
       lat = event.snapshot.child('lat').value as double;
@@ -102,12 +97,19 @@ class _MyMapState extends State<MyMap> {
       m = Marker(
         markerId: MarkerId(myId2 + nameIndex2.toString()),
         position: LatLng(lat, long),
-        infoWindow: InfoWindow(
-            title: 'alibaba how are you $lat $long', snippet: "salam"),
+        infoWindow: InfoWindow(title: 'alibaba how are you $lat $long', snippet: "salam"),
+        icon: markerbitmap,
+        // icon: BitmapDescriptor.fromBytes(bytes),
+      );
+      m2 = Marker(
+        markerId: MarkerId(myId2 + 's' + nameIndex2.toString()),
+        position: LatLng(lat + 0.005, long + 0.005),
+        infoWindow: InfoWindow(title: 'zaynab how are you $lat $long', snippet: "salam"),
         icon: markerbitmap,
         // icon: BitmapDescriptor.fromBytes(bytes),
       );
       markersSet2.add(m!);
+      markersSet2.add(m2!);
       //  print('Name of index ${nameIndex}');
       setState(() {});
       // DataSnapshot

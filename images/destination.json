@@ -1,0 +1,181 @@
+{
+   "predictions" : [
+      {
+         "description" : "نجف، Iraq",
+         "matched_substrings" : [
+            {
+               "length" : 3,
+               "offset" : 0
+            }
+         ],
+         "place_id" : "ChIJYYJ6m6zQXhUR8LjhC-Suibk",
+         "reference" : "ChIJYYJ6m6zQXhUR8LjhC-Suibk",
+         "structured_formatting" : {
+            "main_text" : "نجف",
+            "main_text_matched_substrings" : [
+               {
+                  "length" : 3,
+                  "offset" : 0
+               }
+            ],
+            "secondary_text" : "Iraq"
+         },
+         "terms" : [
+            {
+               "offset" : 0,
+               "value" : "نجف"
+            },
+            {
+               "offset" : 5,
+               "value" : "Iraq"
+            }
+         ],
+         "types" : [ "locality", "political", "geocode" ]
+      },
+      {
+         "description" : "نجف الاشرف، Najaf, Iraq",
+         "matched_substrings" : [
+            {
+               "length" : 3,
+               "offset" : 0
+            }
+         ],
+         "place_id" : "ChIJ-7deMNrXXhURVIQqv3AdiLc",
+         "reference" : "ChIJ-7deMNrXXhURVIQqv3AdiLc",
+         "structured_formatting" : {
+            "main_text" : "نجف الاشرف",
+            "main_text_matched_substrings" : [
+               {
+                  "length" : 3,
+                  "offset" : 0
+               }
+            ],
+            "secondary_text" : "Najaf, Iraq"
+         },
+         "terms" : [
+            {
+               "offset" : 0,
+               "value" : "نجف الاشرف"
+            },
+            {
+               "offset" : 12,
+               "value" : "Najaf"
+            },
+            {
+               "offset" : 19,
+               "value" : "Iraq"
+            }
+         ],
+         "types" : [ "point_of_interest", "establishment" ]
+      },
+      {
+         "description" : "طريق نجف - بغداد، Kufa, Iraq",
+         "matched_substrings" : [
+            {
+               "length" : 3,
+               "offset" : 5
+            }
+         ],
+         "place_id" : "EinYt9ix2YrZgiDZhtis2YEgLSDYqNi62K_Yp9iv2IwgS3VmYSwgSXJhcSIuKiwKFAoSCWlWjoHR1V4VEblwdvved3EtEhQKEgnDeinaO9deFRFtSMtSRRsuOg",
+         "reference" : "EinYt9ix2YrZgiDZhtis2YEgLSDYqNi62K_Yp9iv2IwgS3VmYSwgSXJhcSIuKiwKFAoSCWlWjoHR1V4VEblwdvved3EtEhQKEgnDeinaO9deFRFtSMtSRRsuOg",
+         "structured_formatting" : {
+            "main_text" : "طريق نجف - بغداد",
+            "main_text_matched_substrings" : [
+               {
+                  "length" : 3,
+                  "offset" : 5
+               }
+            ],
+            "secondary_text" : "Kufa, Iraq"
+         },
+         "terms" : [
+            {
+               "offset" : 0,
+               "value" : "طريق نجف - بغداد"
+            },
+            {
+               "offset" : 18,
+               "value" : "Kufa"
+            },
+            {
+               "offset" : 24,
+               "value" : "Iraq"
+            }
+         ],
+         "types" : [ "route", "geocode" ]
+      },
+      {
+         "description" : "نجف، Kufa, Iraq",
+         "matched_substrings" : [
+            {
+               "length" : 3,
+               "offset" : 0
+            }
+         ],
+         "place_id" : "ChIJc7f1aHvVXhURALfw84WB9HI",
+         "reference" : "ChIJc7f1aHvVXhURALfw84WB9HI",
+         "structured_formatting" : {
+            "main_text" : "نجف",
+            "main_text_matched_substrings" : [
+               {
+                  "length" : 3,
+                  "offset" : 0
+               }
+            ],
+            "secondary_text" : "Kufa, Iraq"
+         },
+         "terms" : [
+            {
+               "offset" : 0,
+               "value" : "نجف"
+            },
+            {
+               "offset" : 5,
+               "value" : "Kufa"
+            },
+            {
+               "offset" : 11,
+               "value" : "Iraq"
+            }
+         ],
+         "types" : [ "place_of_worship", "point_of_interest", "establishment" ]
+      },
+      {
+         "description" : "نجف حي الميلاد باجر اسكند عدنان، Najaf, Iraq",
+         "matched_substrings" : [
+            {
+               "length" : 3,
+               "offset" : 0
+            }
+         ],
+         "place_id" : "ChIJg5L2xunRXhUR7GEssV8v69U",
+         "reference" : "ChIJg5L2xunRXhUR7GEssV8v69U",
+         "structured_formatting" : {
+            "main_text" : "نجف حي الميلاد باجر اسكند عدنان",
+            "main_text_matched_substrings" : [
+               {
+                  "length" : 3,
+                  "offset" : 0
+               }
+            ],
+            "secondary_text" : "Najaf, Iraq"
+         },
+         "terms" : [
+            {
+               "offset" : 0,
+               "value" : "نجف حي الميلاد باجر اسكند عدنان"
+            },
+            {
+               "offset" : 33,
+               "value" : "Najaf"
+            },
+            {
+               "offset" : 40,
+               "value" : "Iraq"
+            }
+         ],
+         "types" : [ "point_of_interest", "establishment" ]
+      }
+   ],
+   "status" : "OK"
+}
