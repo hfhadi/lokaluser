@@ -16,6 +16,8 @@ import 'package:lokaluser/widgets/zone_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'mainScreens/main_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -48,16 +50,16 @@ Future<void> main() async {
               //  const MarkerUpdate(),
 
               ///life driver location for web
-              //   JustMap(),
-              //  const MainScreen2(),
+           //   JustMap(),w
+           // MainScreen(),
 
-              const MySplashScreen(),
+            const MySplashScreen(),
           //  const SendFcm(),
-          //const TheLocation(),
-          //   const ZoneWidget(),
+          //  const TheLocation(),
+          // const ZoneWidget(),
           // FetchData(),
           //   const MyMap(),/// not important
-          //  HomeScreen(),
+         //   HomeScreen(),
           // SendFcm(),
           debugShowCheckedModeBanner: false,
         ),

@@ -280,11 +280,11 @@ class _MainScreen2State extends State<MainScreen2> {
 
     Map originLocationMap = {
       "latitude": originLocation!.locationLatitude.toString(),
-      "longitude": originLocation!.locationLongitude.toString(),
+      "longitude": originLocation.locationLongitude.toString(),
     };
     Map destinationLocationMap = {
       "latitude": destinationLocation!.locationLatitude.toString(),
-      "longitude": destinationLocation!.locationLongitude.toString(),
+      "longitude": destinationLocation.locationLongitude.toString(),
     };
     Map userInformationMap = {
       "origin": originLocationMap,
@@ -351,7 +351,7 @@ class _MainScreen2State extends State<MainScreen2> {
     FirebaseDatabase.instance
         .ref()
         .child("drivers")
-        .child(chosenDriverId!)
+        .child(chosenDriverId)
         .child("newRideStatus")
         .set(referenceRideRequest!.key);
 
@@ -359,12 +359,12 @@ class _MainScreen2State extends State<MainScreen2> {
   }
 
   retrieveOnlineDriversInformation(List onlineNearestDriversList) async {
-    dList = [];
+    sortedDriverList = [];
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("drivers");
     for (int i = 0; i < onlineNearestDriversList.length; i++) {
       await ref.child(onlineNearestDriversList[i].driverId.toString()).once().then((dataSnapshot) {
         var driverKeyInfo = dataSnapshot.snapshot.value;
-        dList.add(driverKeyInfo);
+        sortedDriverList.add(driverKeyInfo);
       });
     }
   }
@@ -607,7 +607,7 @@ class _MainScreen2State extends State<MainScreen2> {
     print(directionDetailsInfo!.e_points);
 
     PolylinePoints pPoints = PolylinePoints();
-    List<PointLatLng> decodedPolyLinePointsResultList = pPoints.decodePolyline(directionDetailsInfo!.e_points!);
+    List<PointLatLng> decodedPolyLinePointsResultList = pPoints.decodePolyline(directionDetailsInfo.e_points!);
 
     pLineCoOrdinatesList.clear();
 

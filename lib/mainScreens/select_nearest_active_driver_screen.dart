@@ -20,17 +20,17 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
 
   getFareAmountAccordingToVehicleType(int index) {
     if (tripDirectionDetailsInfo != null) {
-      if (dList[index]["car_details"]["type"].toString() == "bike") {
+      if (sortedDriverList[index]["car_details"]["type"].toString() == "bike") {
         fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) / 2)
             .toStringAsFixed(1);
       }
-      if (dList[index]["car_details"]["type"].toString() ==
+      if (sortedDriverList[index]["car_details"]["type"].toString() ==
           "uber-x") //means executive type of car - more comfortable pro level
       {
         fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 2)
             .toStringAsFixed(1);
       }
-      if (dList[index]["car_details"]["type"].toString() == "uber-go") // non - executive car - comfortable
+      if (sortedDriverList[index]["car_details"]["type"].toString() == "uber-go") // non - executive car - comfortable
       {
         fareAmount =
             (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!)).toString();
@@ -63,12 +63,12 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
         ),
       ),
       body: ListView.builder(
-        itemCount: dList.length,
+        itemCount: sortedDriverList.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
               setState(() {
-                chosenDriverId = dList[index]["id"].toString();
+                chosenDriverId = sortedDriverList[index]["id"].toString();
               });
               Navigator.pop(context, "driverChoosed");
             },
@@ -81,7 +81,7 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                 leading: Padding(
                   padding: const EdgeInsets.only(top: 2.0),
                   child: Image.asset(
-                    "images/" + dList[index]["car_details"]["type"].toString() + ".png",
+                    "images/" + sortedDriverList[index]["car_details"]["type"].toString() + ".png",
                     width: 70,
                   ),
                 ),
@@ -89,14 +89,14 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      dList[index]["name"],
+                      sortedDriverList[index]["name"],
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black54,
                       ),
                     ),
                     Text(
-                      dList[index]["car_details"]["car_model"],
+                      sortedDriverList[index]["car_details"]["car_model"],
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.white54,

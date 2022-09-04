@@ -6,7 +6,7 @@ import '../models/user_model.dart';
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
-List dList = []; //online-active drivers Information List
+List sortedDriverList = []; //online-active drivers Information List
 DirectionDetailsInfo? tripDirectionDetailsInfo;
 String? chosenDriverId = "";
 String cloudMessagingServerToken =
