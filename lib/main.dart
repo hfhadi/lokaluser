@@ -16,12 +16,15 @@ import 'package:lokaluser/widgets/zone_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'firebase_options.dart';
 import 'mainScreens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (kIsWeb) {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+ /* if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyDbkI8uwv1xVSlIVV3I2dILxs9-foMdNgY",
@@ -34,7 +37,7 @@ Future<void> main() async {
     );
   } else {
     await Firebase.initializeApp();
-  }
+  }*/
 
   runApp(
     MyApp(

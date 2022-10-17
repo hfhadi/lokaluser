@@ -167,7 +167,7 @@ class AssistantMethods {
   }
 
   static void readTripsHistoryInformation(context) {
-    var tripsAllKeys =
+    List<String> tripsAllKeys =
         Provider.of<AppInfo>(context, listen: false).historyTripsKeysList;
 
     for (String eachKey in tripsAllKeys) {

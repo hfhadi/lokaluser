@@ -248,6 +248,8 @@ class _MainScreenState extends State<MainScreen> {
                 ''');*/
   }
 
+
+
   checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
 
@@ -288,7 +290,7 @@ class _MainScreenState extends State<MainScreen> {
         }
 
         print(
-            sortedDriverList.firstWhere((element) => element[1]['zone'] == _userZone)[0]);
+            sortedDriverList.firstWhere((driver) => driver[1]['zone'] == _userZone)[0]);
 
         print('------------driver info----------------');
         driverId =
@@ -323,7 +325,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-  locateUserPosition() async {
+  locateUserPositionAddress() async {
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
@@ -492,7 +494,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
 
-    // onlineNearByAvailableDriversList = GeoFireAssistant.activeNearbyAvailableDriversList;
+   //  onlineNearByAvailableDriversList = GeoFireAssistant.activeNearbyAvailableDriversList;
     searchOnlineDriversByZone();
   }
 
@@ -601,7 +603,7 @@ class _MainScreenState extends State<MainScreen> {
             .ref()
             .child("drivers")
             .child(driverId)
-            .child("FnewRideStatus")
+            .child("newRideStatus")
             .onValue
             .listen((eventSnapshot) {
           //1. driver has cancel the rideRequest :: Push Notification
@@ -706,7 +708,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     checkIfLocationPermissionAllowed();
-
+    //displayActiveDriversOnUsersMap();
     // locateUserPosition();
   }
 
@@ -722,6 +724,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     createActiveNearByDriverIconMarker();
+
 
     return SafeArea(
       child: Scaffold(
@@ -759,7 +762,7 @@ class _MainScreenState extends State<MainScreen> {
                   _controllerGoogleMap.complete(controller);
                   newGoogleMapController = controller;
 
-                  locateUserPosition();
+                  locateUserPositionAddress();
                 },
               ),
             ),
@@ -1012,10 +1015,11 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             ElevatedButton(
                               child: const Text(
-                                "change",
+                                "update",
                               ),
                               onPressed: () {
-                                locateUserPosition();
+                                locateUserPositionAddress();
+                                getSortedDriver();
                                 /* setState(() {
                                   searchLocationContainerHeight = 10;
                                 });*/
@@ -1400,7 +1404,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   displayActiveDriversOnUsersMap() {
-    /* setState(() {
+     setState(() {
       markersSet.clear();
       circlesSet.clear();
 
@@ -1423,7 +1427,7 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         markersSet = driversMarkerSet;
       });
-    });*/
+    });
   }
 
   createActiveNearByDriverIconMarker() {

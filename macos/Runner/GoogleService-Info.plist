@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>242720635019-74t4a7pb5ppcvb0hri1h082uae7shfa4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.242720635019-74t4a7pb5ppcvb0hri1h082uae7shfa4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA4gUR24k17vQbTopxbv7To92QfKqH2QM4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>242720635019</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fapp4you.lokaluser</string>
+	<key>PROJECT_ID</key>
+	<string>geetaxi-15c74</string>
+	<key>STORAGE_BUCKET</key>
+	<string>geetaxi-15c74.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:242720635019:ios:307dac81d10937f4363c8e</string>
+	<key>DATABASE_URL</key>
+	<string>https://geetaxi-15c74.firebaseio.com</string>
+</dict>
+</plist>

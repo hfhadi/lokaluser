@@ -98,8 +98,7 @@ class _ZoneWidgetState extends State<ZoneWidget> {
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       imageConfiguration,
       "images/prayer.png",
-    ); */ /*
-    */
+    ); */
   /*  originMarker = Marker(
       markerId: const MarkerId("zone1"),
       infoWindow: const InfoWindow(
@@ -110,25 +109,20 @@ class _ZoneWidgetState extends State<ZoneWidget> {
       position: LatLng(point1.latitude!, point1.longitude!),
       // icon: BitmapDescriptor.fromBytes(bytes),
       */
-  /*
-    */
   /* onTap: () {
         setState(() {
           markersSet
               .addAll(<Marker>{originMarker!, originMarker2!, originMarker3!});
         });
       }, */
-  /* */ /*
-    );
-    originMarker2 = Marker(
-      */ /* */
+
+
   /*  onTap: () {
           setState(() {
             markersSet.removeAll(<Marker>{originMarker2!, originMarker3!});
           });
         }, */
-  /*
-    */
+
   /*
       markerId: const MarkerId("zone2"),
       infoWindow: const InfoWindow(title: 'Zone 2', snippet: "this is zone 2"),
@@ -152,7 +146,9 @@ class _ZoneWidgetState extends State<ZoneWidget> {
       infoWindow: const InfoWindow(title: 'Zone 5', snippet: "this is zone 5"),
       position: LatLng(point5.latitude!, point5.longitude!),
     );
-    */ /*
+    */
+
+  /*
 
     Position cPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     try {
@@ -273,7 +269,8 @@ class _ZoneWidgetState extends State<ZoneWidget> {
     Position cPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
 
-    */ /*   LatLng latLngPosition = LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+    */
+  /*   LatLng latLngPosition = LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
 
      CameraPosition cameraPosition = CameraPosition(target: latLngPosition, zoom: 14);
 
@@ -281,7 +278,8 @@ class _ZoneWidgetState extends State<ZoneWidget> {
 
     String humanReadableAddress =
         await AssistantMethods.searchAddressForGeographicCoOrdinates(userCurrentPosition!, context);
-    print("this is your address = " + humanReadableAddress);*/ /*
+    print("this is your address = " + humanReadableAddress);*/
+  /*
 
     initZer();
     //AssistantMethods.readTripsKeysForOnlineUser(context);
@@ -319,14 +317,16 @@ class _ZoneWidgetState extends State<ZoneWidget> {
             break;
 
           //whenever driver moves - update driver location
-          */ /* case Geofire.onKeyMoved:
+          */
+  /* case Geofire.onKeyMoved:
             ActiveNearbyAvailableDrivers activeNearbyAvailableDriver = ActiveNearbyAvailableDrivers();
             activeNearbyAvailableDriver.locationLatitude = map['latitude'];
             activeNearbyAvailableDriver.locationLongitude = map['longitude'];
             activeNearbyAvailableDriver.driverId = map['key'];
             GeoFireAssistant.updateActiveNearbyAvailableDriverLocation(activeNearbyAvailableDriver);
             displayActiveDriversOnUsersMap();
-            break;*/ /*
+            break;*/
+  /*
 
           //display those online/active drivers on user's map
           case Geofire.onGeoQueryReady:

@@ -16,7 +16,7 @@ class _TripsHistoryScreenState extends State<TripsHistoryScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text("Trips History"),
+        title: const Text("Trips History.."),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {

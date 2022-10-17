@@ -60,6 +60,8 @@ class AppInfo extends ChangeNotifier {
 
   updateOverAllTripsHistoryInformation(TripsHistoryModel eachTripHistory) {
     allTripsHistoryInformationList.add(eachTripHistory);
+
+    allTripsHistoryInformationList=List.from(allTripsHistoryInformationList.reversed);
     notifyListeners();
   }
 }

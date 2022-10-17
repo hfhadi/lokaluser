@@ -28,23 +28,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginUserNow() async {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext c) {
-          return ProgressDialog(
-            message: "Processing, Please wait...",
-          );
-        });
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "Processing, Please wait...",
+        );
+      },
+    );
 
     final User? firebaseUser = (await fAuth
             .signInWithEmailAndPassword(
       email: emailTextEditingController.text.trim(),
       password: passwordTextEditingController.text.trim(),
     )
-            .catchError((msg) {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Error: " + msg.toString());
-    }))
+            .catchError(
+      (msg) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Error: " + msg.toString());
+      },
+    ))
         .user;
 
     if (firebaseUser != null) {
