@@ -64,7 +64,7 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
         Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
       }
       setState(() {
-        userDropOffAddress = directions.locationName!;
+        gUserDropOffAddress = directions.locationName!;
       });
       Navigator.pop(context, "obtainedDropoff");
     }
