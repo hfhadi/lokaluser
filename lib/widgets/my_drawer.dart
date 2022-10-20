@@ -115,7 +115,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
           GestureDetector(
             onTap: () {
-              fAuth.signOut();
+              gFirebaseAuth.signOut();
               Navigator.push(context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
             },
             child: const ListTile(
