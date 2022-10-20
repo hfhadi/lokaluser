@@ -59,36 +59,36 @@ class _RateDriverScreenState extends State<RateDriverScreen> {
                 height: 22.0,
               ),
               SmoothStarRating(
-                rating: countRatingStars,
+                rating: gCountRatingStars,
                 allowHalfRating: false,
                 starCount: 5,
                 color: Colors.green,
                 borderColor: Colors.green,
                 size: 46,
                 onRatingChanged: (valueOfStarsChoosed) {
-                  countRatingStars = valueOfStarsChoosed;
+                  gCountRatingStars = valueOfStarsChoosed;
 
-                  if (countRatingStars == 1) {
+                  if (gCountRatingStars == 1) {
                     setState(() {
                       titleStarsRating = "Very Bad";
                     });
                   }
-                  if (countRatingStars == 2) {
+                  if (gCountRatingStars == 2) {
                     setState(() {
                       titleStarsRating = "Bad";
                     });
                   }
-                  if (countRatingStars == 3) {
+                  if (gCountRatingStars == 3) {
                     setState(() {
                       titleStarsRating = "Good";
                     });
                   }
-                  if (countRatingStars == 4) {
+                  if (gCountRatingStars == 4) {
                     setState(() {
                       titleStarsRating = "Very Good";
                     });
                   }
-                  if (countRatingStars == 5) {
+                  if (gCountRatingStars == 5) {
                     setState(() {
                       titleStarsRating = "Excellent";
                     });
@@ -119,14 +119,14 @@ class _RateDriverScreenState extends State<RateDriverScreen> {
 
                     rateDriverRef.once().then((snap) {
                       if (snap.snapshot.value == null) {
-                        rateDriverRef.set(countRatingStars.toString());
+                        rateDriverRef.set(gCountRatingStars.toString());
 
                         MyApp.restartApp(context);
                       } else {
                         double pastRatings =
                             double.parse(snap.snapshot.value.toString());
                         double newAverageRatings =
-                            (pastRatings + countRatingStars) / 2;
+                            (pastRatings + gCountRatingStars) / 2;
                         rateDriverRef.set(newAverageRatings.toString());
 
                         MyApp.restartApp(context);
