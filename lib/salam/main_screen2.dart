@@ -258,8 +258,8 @@ class _MainScreen2State extends State<MainScreen2> {
         await AssistantMethods.searchAddressForGeographicCoOrdinates(userCurrentPosition!, context);
     print("this is your address = " + humanReadableAddress);
 
-    userName = userModelCurrentInfo!.name!;
-    userEmail = userModelCurrentInfo!.email!;
+    userName = gUserModelCurrentInfo!.name!;
+    userEmail = gUserModelCurrentInfo!.email!;
 
     initializeGeoFireListener();
   }
@@ -290,8 +290,8 @@ class _MainScreen2State extends State<MainScreen2> {
       "origin": originLocationMap,
       "destination": destinationLocationMap,
       "time": DateTime.now().toString(),
-      "userName": userModelCurrentInfo!.name,
-      "userPhone": userModelCurrentInfo!.phone,
+      "userName": gUserModelCurrentInfo!.name,
+      "userPhone": gUserModelCurrentInfo!.phone,
       "originAddress": originLocation.locationName ?? "",
       "destinationAddress": destinationLocation.locationName ?? "",
       "driverId": "waiting..."
@@ -334,10 +334,10 @@ class _MainScreen2State extends State<MainScreen2> {
             builder: (c) => SelectNearestActiveDriversScreen(referenceRideRequest: referenceRideRequest)));
 
     if (response == "driverChoosed") {
-      FirebaseDatabase.instance.ref().child("drivers").child(chosenDriverId!).once().then((snap) {
+      FirebaseDatabase.instance.ref().child("drivers").child(gChosenDriverId!).once().then((snap) {
         if (snap.snapshot.value != null) {
           //send notification to that specific driver
-          sendNotificationToDriverNow(chosenDriverId!);
+          sendNotificationToDriverNow(gChosenDriverId!);
         } else {
           Fluttertoast.showToast(msg: "This driver do not exist. Try again.");
         }
@@ -359,12 +359,12 @@ class _MainScreen2State extends State<MainScreen2> {
   }
 
   retrieveOnlineDriversInformation(List onlineNearestDriversList) async {
-    sortedDriverList = [];
+    gSortedDriverList = [];
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("drivers");
     for (int i = 0; i < onlineNearestDriversList.length; i++) {
       await ref.child(onlineNearestDriversList[i].driverId.toString()).once().then((dataSnapshot) {
         var driverKeyInfo = dataSnapshot.snapshot.value;
-        sortedDriverList.add(driverKeyInfo);
+        gSortedDriverList.add(driverKeyInfo);
       });
     }
   }
@@ -598,7 +598,7 @@ class _MainScreen2State extends State<MainScreen2> {
     var directionDetailsInfo =
         await AssistantMethods.obtainOriginToDestinationDirectionDetails(originLatLng, destinationLatLng);
     setState(() {
-      tripDirectionDetailsInfo = directionDetailsInfo;
+      gTripDirectionDetailsInfo = directionDetailsInfo;
     });
 
     Navigator.pop(context);

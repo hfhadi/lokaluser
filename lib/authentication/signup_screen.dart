@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
         });
 
-    final User? firebaseUser = (await fAuth
+    final User? firebaseUser = (await gFirebaseAuth
             .createUserWithEmailAndPassword(
       email: emailTextEditingController.text.trim(),
       password: passwordTextEditingController.text.trim(),
@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           FirebaseDatabase.instance.ref().child("users");
       reference.child(firebaseUser.uid).set(userMap);
 
-      currentFirebaseUser = firebaseUser;
+      gCurrentFirebaseUser = firebaseUser;
       Fluttertoast.showToast(msg: "Account has been Created.");
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => MySplashScreen()));

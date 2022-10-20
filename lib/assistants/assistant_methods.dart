@@ -41,16 +41,16 @@ class AssistantMethods {
   }
 
   static void readCurrentOnlineUserInfo() async {
-    currentFirebaseUser = fAuth.currentUser;
+    gCurrentFirebaseUser = gFirebaseAuth.currentUser;
 
     DatabaseReference userRef = FirebaseDatabase.instance
         .ref()
         .child("users")
-        .child(currentFirebaseUser!.uid);
+        .child(gCurrentFirebaseUser!.uid);
 
     userRef.once().then((snap) {
       if (snap.snapshot.value != null) {
-        userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
+        gUserModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
       }
     });
   }
@@ -101,11 +101,11 @@ class AssistantMethods {
 
   static sendNotificationToDriverNow(
       String deviceRegistrationToken, String userRideRequestId, context) async {
-    String destinationAddress = userDropOffAddress;
+    String destinationAddress = gUserDropOffAddress;
 
     Map<String, String> headerNotification = {
       'Content-Type': 'application/json',
-      'Authorization': cloudMessagingServerToken,
+      'Authorization': gCloudMessagingServerToken,
     };
 
     Map bodyNotification = {
@@ -141,7 +141,7 @@ class AssistantMethods {
         .ref()
         .child("All Ride Requests")
         .orderByChild("userName")
-        .equalTo(userModelCurrentInfo!.name)
+        .equalTo(gUserModelCurrentInfo!.name)
         .once()
         .then((snap) {
       if (snap.snapshot.value != null) {

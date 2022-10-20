@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
 
-    final User? firebaseUser = (await fAuth
+    final User? firebaseUser = (await gFirebaseAuth
             .signInWithEmailAndPassword(
       email: emailTextEditingController.text.trim(),
       password: passwordTextEditingController.text.trim(),
@@ -56,13 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
       driversRef.child(firebaseUser.uid).once().then((driverKey) {
         final snap = driverKey.snapshot;
         if (snap.value != null) {
-          currentFirebaseUser = firebaseUser;
+          gCurrentFirebaseUser = firebaseUser;
           Fluttertoast.showToast(msg: "Login Successful.");
           Navigator.push(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
         } else {
           Fluttertoast.showToast(msg: "No record exist with this email.");
-          fAuth.signOut();
+          gFirebaseAuth.signOut();
           Navigator.push(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
         }
