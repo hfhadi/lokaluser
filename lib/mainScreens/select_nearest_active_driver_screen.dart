@@ -19,21 +19,21 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
   String fareAmount = "";
 
   getFareAmountAccordingToVehicleType(int index) {
-    if (tripDirectionDetailsInfo != null) {
-      if (sortedDriverList[index]["car_details"]["type"].toString() == "bike") {
-        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) / 2)
+    if (gTripDirectionDetailsInfo != null) {
+      if (gSortedDriverList[index]["car_details"]["type"].toString() == "bike") {
+        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(gTripDirectionDetailsInfo!) / 2)
             .toStringAsFixed(1);
       }
-      if (sortedDriverList[index]["car_details"]["type"].toString() ==
+      if (gSortedDriverList[index]["car_details"]["type"].toString() ==
           "uber-x") //means executive type of car - more comfortable pro level
       {
-        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 2)
+        fareAmount = (AssistantMethods.calculateFareAmountFromOriginToDestination(gTripDirectionDetailsInfo!) * 2)
             .toStringAsFixed(1);
       }
-      if (sortedDriverList[index]["car_details"]["type"].toString() == "uber-go") // non - executive car - comfortable
+      if (gSortedDriverList[index]["car_details"]["type"].toString() == "uber-go") // non - executive car - comfortable
       {
         fareAmount =
-            (AssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!)).toString();
+            (AssistantMethods.calculateFareAmountFromOriginToDestination(gTripDirectionDetailsInfo!)).toString();
       }
     }
     return fareAmount;
@@ -63,12 +63,12 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
         ),
       ),
       body: ListView.builder(
-        itemCount: sortedDriverList.length,
+        itemCount: gSortedDriverList.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
               setState(() {
-                chosenDriverId = sortedDriverList[index]["id"].toString();
+                gChosenDriverId = gSortedDriverList[index]["id"].toString();
               });
               Navigator.pop(context, "driverChoosed");
             },
@@ -81,7 +81,7 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                 leading: Padding(
                   padding: const EdgeInsets.only(top: 2.0),
                   child: Image.asset(
-                    "images/" + sortedDriverList[index]["car_details"]["type"].toString() + ".png",
+                    "images/" + gSortedDriverList[index]["car_details"]["type"].toString() + ".png",
                     width: 70,
                   ),
                 ),
@@ -89,14 +89,14 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      sortedDriverList[index]["name"],
+                      gSortedDriverList[index]["name"],
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black54,
                       ),
                     ),
                     Text(
-                      sortedDriverList[index]["car_details"]["car_model"],
+                      gSortedDriverList[index]["car_details"]["car_model"],
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.white54,
@@ -125,14 +125,14 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                       height: 2,
                     ),
                     Text(
-                      tripDirectionDetailsInfo != null ? tripDirectionDetailsInfo!.duration_text! : "",
+                      gTripDirectionDetailsInfo != null ? gTripDirectionDetailsInfo!.duration_text! : "",
                       style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54, fontSize: 12),
                     ),
                     const SizedBox(
                       height: 2,
                     ),
                     Text(
-                      tripDirectionDetailsInfo != null ? tripDirectionDetailsInfo!.distance_text! : "",
+                      gTripDirectionDetailsInfo != null ? gTripDirectionDetailsInfo!.distance_text! : "",
                       style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54, fontSize: 12),
                     ),
                   ],
