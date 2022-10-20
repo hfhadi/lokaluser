@@ -16,11 +16,11 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
-    fAuth.currentUser != null ? AssistantMethods.readCurrentOnlineUserInfo() : null;
+    gFirebaseAuth.currentUser != null ? AssistantMethods.readCurrentOnlineUserInfo() : null;
 
     Timer(const Duration(seconds: 1), () async {
-      if (fAuth.currentUser != null) {
-        currentFirebaseUser = fAuth.currentUser;
+      if (gFirebaseAuth.currentUser != null) {
+        gCurrentFirebaseUser = gFirebaseAuth.currentUser;
         Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
       } else {
         Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
