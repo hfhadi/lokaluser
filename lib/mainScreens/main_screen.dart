@@ -248,8 +248,6 @@ class _MainScreenState extends State<MainScreen> {
                 ''');*/
   }
 
-
-
   checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
 
@@ -259,8 +257,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   getSortedDriver() async {
+    Fluttertoast.showToast(msg: "please wait...");
     try {
-      var activeDriversRef = FirebaseDatabase.instance.ref().child("activeDrivers");
+      var activeDriversRef =
+          FirebaseDatabase.instance.ref().child("activeDrivers");
       //activeDriversDSS=activeDriversDataSnapShot
       DataSnapshot activeDriversDSS = await activeDriversRef.get();
 
@@ -278,27 +278,30 @@ class _MainScreenState extends State<MainScreen> {
         );
 
         // print(activeDriversListSortedByTime);
-        sortedDriverList = [];// put sortedActiveDriversList in a normal list
+        gSortedDriverList = []; // put sortedActiveDriversList in a normal list
         activeDriversListSortedByTime.forEach((key, value) {
-          print('my list is ${activeDriversListSortedByTime[key]}');
-          sortedDriverList.add([key, value]);
+          print('driver info ${activeDriversListSortedByTime[key]}');
+          gSortedDriverList.add([key, value]);
         });
 
-
-        for (var element in sortedDriverList) {
-          print('${element[0]} ${element[1]['time']} : ${element[1]['zone']}');
+        for (var driverInfo in gSortedDriverList) {
+          print(
+              '${driverInfo[0]} ${driverInfo[1]['time']} : ${driverInfo[1]['zone']}');
         }
 
-        print(
-            sortedDriverList.firstWhere((driver) => driver[1]['zone'] == _userZone)[0]);
-
+        /* print(
+            gSortedDriverList.firstWhere((driver) => driver[1]['zone'] == _userZone)[0]);
+*/
         print('------------driver info----------------');
-        driverId =
-            sortedDriverList.firstWhere((element) => element[1]['zone'] == _userZone)[0];
-        driverInfo =
-            sortedDriverList.firstWhere((element) => element[1]['zone'] == _userZone);
-        print(driverInfo);
-        //  driverLifeTimePosition(driverInfo);
+        try {
+          driverId = gSortedDriverList
+              .firstWhere((element) => element[1]['zone'] == _userZone)[0];
+          driverInfo = gSortedDriverList
+              .firstWhere((element) => element[1]['zone'] == _userZone);
+          print('driverId= $driverId');
+        } catch (e) {
+          print('error is $e');
+        }
       } else {
         print('no drivers');
       }
@@ -324,14 +327,13 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-
   locateUserPositionAddress() async {
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
     Point userPoint = Point(cPosition.latitude, cPosition.longitude);
     _userZone = myzone.MyZones().getZoneNameByPoint(userPoint);
-    getSortedDriver();
+    // getSortedDriver();
 
     print('userZone: $_userZone');
 
@@ -351,8 +353,8 @@ class _MainScreenState extends State<MainScreen> {
             userCurrentPosition!, context);
     print("user address = " + humanReadableAddress);
     try {
-      userName = userModelCurrentInfo!.name!;
-      userEmail = userModelCurrentInfo!.email!;
+      userName = gUserModelCurrentInfo!.name!;
+      userEmail = gUserModelCurrentInfo!.email!;
     } catch (e) {
       print(e.toString());
     }
@@ -387,8 +389,8 @@ class _MainScreenState extends State<MainScreen> {
       "origin": originLocationMap,
       "destination": destinationLocationMap,
       "time": DateTime.now().toString(),
-      "userName": userModelCurrentInfo!.name ,
-      "userPhone": userModelCurrentInfo!.phone,
+      "userName": gUserModelCurrentInfo!.name,
+      "userPhone": gUserModelCurrentInfo!.phone,
       "originAddress": originLocation.locationName,
       "destinationAddress": destinationLocation.locationName,
       "driverId": "waiting",
@@ -405,21 +407,21 @@ class _MainScreenState extends State<MainScreen> {
 
       if ((eventSnap.snapshot.value as Map)["car_details"] != null) {
         setState(() {
-          driverCarDetails =
+          gDriverCarDetails =
               (eventSnap.snapshot.value as Map)["car_details"].toString();
         });
       }
 
       if ((eventSnap.snapshot.value as Map)["driverPhone"] != null) {
         setState(() {
-          driverPhone =
+          gDriverPhone =
               (eventSnap.snapshot.value as Map)["driverPhone"].toString();
         });
       }
 
       if ((eventSnap.snapshot.value as Map)["driverName"] != null) {
         setState(() {
-          driverName =
+          gDriverName =
               (eventSnap.snapshot.value as Map)["driverName"].toString();
         });
       }
@@ -494,7 +496,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
 
-   //  onlineNearByAvailableDriversList = GeoFireAssistant.activeNearbyAvailableDriversList;
+    //  onlineNearByAvailableDriversList = GeoFireAssistant.activeNearbyAvailableDriversList;
     searchOnlineDriversByZone();
   }
 
@@ -691,7 +693,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   retrieveOnlineDriversInformation(List onlineNearestDriversList) async {
-    sortedDriverList = [];
+    gSortedDriverList = [];
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("drivers");
     for (int i = 0; i < onlineNearestDriversList.length; i++) {
       await ref
@@ -699,7 +701,7 @@ class _MainScreenState extends State<MainScreen> {
           .once()
           .then((dataSnapshot) {
         var driverKeyInfo = dataSnapshot.snapshot.value;
-        sortedDriverList.add(driverKeyInfo);
+        gSortedDriverList.add(driverKeyInfo);
       });
     }
   }
@@ -724,7 +726,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     createActiveNearByDriverIconMarker();
-
 
     return SafeArea(
       child: Scaffold(
@@ -989,7 +990,7 @@ class _MainScreenState extends State<MainScreen> {
                               child: const Text(
                                 "Request a Ride",
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (Provider.of<AppInfo>(context, listen: false)
                                             .userDropOffLocation !=
                                         null &&
@@ -997,15 +998,20 @@ class _MainScreenState extends State<MainScreen> {
                                             .userDropOffLocation!
                                             .locationName !=
                                         '') {
+                                  await getSortedDriver();
                                   if (driverInfo != null) {
-                                    getSortedDriver();
+                                    locateUserPositionAddress();
+
                                     saveRideRequestInformation();
                                     driverLifeTimePosition(driverInfo);
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "No drivers in zone");
+                                        msg: "No drivers in zone try again");
                                   }
-                                } else {}
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "where to start/go");
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
@@ -1020,6 +1026,8 @@ class _MainScreenState extends State<MainScreen> {
                               onPressed: () {
                                 locateUserPositionAddress();
                                 getSortedDriver();
+                                saveRideRequestInformation();
+                                driverLifeTimePosition(driverInfo);
                                 /* setState(() {
                                   searchLocationContainerHeight = 10;
                                 });*/
@@ -1146,7 +1154,7 @@ class _MainScreenState extends State<MainScreen> {
 
                       //driver vehicle details
                       Text(
-                        driverCarDetails,
+                        gDriverCarDetails,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 16,
@@ -1160,7 +1168,7 @@ class _MainScreenState extends State<MainScreen> {
 
                       //driver name
                       Text(
-                        driverName,
+                        gDriverName,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 20,
@@ -1237,7 +1245,7 @@ class _MainScreenState extends State<MainScreen> {
         await AssistantMethods.obtainOriginToDestinationDirectionDetails(
             originLatLng, destinationLatLng);
     setState(() {
-      tripDirectionDetailsInfo = directionDetailsInfo;
+      gTripDirectionDetailsInfo = directionDetailsInfo;
     });
 
     Navigator.pop(context);
@@ -1404,20 +1412,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   displayActiveDriversOnUsersMap() {
-     setState(() {
+    setState(() {
       markersSet.clear();
       circlesSet.clear();
 
       Set<Marker> driversMarkerSet = Set<Marker>();
 
-      for (ActiveNearbyAvailableDrivers eachDriver in GeoFireAssistant.activeNearbyAvailableDriversList) {
-        LatLng eachDriverActivePosition = LatLng(eachDriver.locationLatitude!, eachDriver.locationLongitude!);
+      for (ActiveNearbyAvailableDrivers eachDriver
+          in GeoFireAssistant.activeNearbyAvailableDriversList) {
+        LatLng eachDriverActivePosition =
+            LatLng(eachDriver.locationLatitude!, eachDriver.locationLongitude!);
 
         Marker marker = Marker(
           markerId: MarkerId("driver" + eachDriver.driverId!),
           infoWindow: InfoWindow(title: eachDriver.driverId!.toString()),
           position: eachDriverActivePosition,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
           rotation: 360,
         );
 
