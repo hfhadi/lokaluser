@@ -16,7 +16,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   List<PredictedPlaces> placesPredictedList = [];
 
   void findPlaceAutoCompleteSearch(String inputText) async {
+
     if (inputText.length > 1) //2 or more than 2 input characters
+
+
     {
       placesPredictedList = [];
       //  String urlAutoCompleteSearch = 'images/destination.json';
@@ -39,6 +42,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           placesPredictedList = placePredictionsList;
         });
       }
+    }
+    else{
+      setState(() {
+        placesPredictedList.clear();
+      });
+
     }
   }
 
@@ -110,6 +119,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             child: TextField(
                               onChanged: (valueTyped) {
                                 findPlaceAutoCompleteSearch(valueTyped);
+
                               },
                               decoration: const InputDecoration(
                                 hintText: "search here...",
@@ -133,8 +143,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             ),
 
             //display place predictions result
-            (placesPredictedList.isNotEmpty)
-                ? Expanded(
+            if (placesPredictedList.isNotEmpty)
+              Expanded(
                     child: ListView.separated(
                       itemCount: placesPredictedList.length,
                       physics: ClampingScrollPhysics(),
@@ -152,8 +162,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                         );
                       },
                     ),
-                  )
-                : Container(),
+                  ) else  const Padding(
+                    padding: EdgeInsets.only(top:28.0),
+                    child: Text('type to search', style: TextStyle(color: Colors.white)),
+                  ),
           ],
         ),
       ),
