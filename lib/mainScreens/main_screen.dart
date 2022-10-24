@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -42,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     zoom: 14,
   );
 
-  GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   double searchLocationContainerHeight = 230;
   double waitingResponseFromDriverContainerHeight = 0;
   double assignedDriverInfoContainerHeight = 0;
@@ -53,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
   LocationPermission? _locationPermission;
   double bottomPaddingOfMap = 0;
 
-  List<LatLng> pLineCoOrdinatesList = [];
+  List<LatLng> pathPointsCoordinatesList = [];// قائمة النقاط المسئولة عن رسم خطوط المسار بين نقطة البداية ونقطة النهاية
   Set<Polyline> polyLineSet = {};
 
   Set<Marker> markersSet = {};
@@ -256,8 +257,47 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  locateUserPositionAddress() async {
+    Position cPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    userCurrentPosition = cPosition;
+    Point userPoint = Point(cPosition.latitude, cPosition.longitude);
+    _userZone = myzone.MyZones().getZoneNameByPoint(userPoint);
+    // getSortedDriver();
+
+    print('userZone: $_userZone');
+
+    //print('driverId $currentFirebaseUser.');
+
+    LatLng latLngPosition =
+    LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+
+    CameraPosition cameraPosition =
+    CameraPosition(target: latLngPosition, zoom: 14);
+
+    newGoogleMapController!
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    String humanReadableAddress =
+    await AssistantMethods.searchAddressForGeographicCoOrdinates(
+        userCurrentPosition!, context);
+    if (kDebugMode) {
+      print("user address = " + humanReadableAddress);
+    }
+    try {
+      userName = gUserModelCurrentInfo!.name!;
+      userEmail = gUserModelCurrentInfo!.email!;
+    } catch (e) {
+      print(e.toString());
+    }
+
+    // initializeGeoFireListener();
+    AssistantMethods.readTripsKeysForOnlineUser(context);
+  }
+
+
   getSortedDriver() async {
-    Fluttertoast.showToast(msg: "please wait...");
+   // Fluttertoast.showToast(msg: "please wait...");
     try {
       var activeDriversRef =
           FirebaseDatabase.instance.ref().child("activeDrivers");
@@ -325,42 +365,6 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       markersSet.add(driverMarker);
     });
-  }
-
-  locateUserPositionAddress() async {
-    Position cPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    userCurrentPosition = cPosition;
-    Point userPoint = Point(cPosition.latitude, cPosition.longitude);
-    _userZone = myzone.MyZones().getZoneNameByPoint(userPoint);
-    // getSortedDriver();
-
-    print('userZone: $_userZone');
-
-    //print('driverId $currentFirebaseUser.');
-
-    LatLng latLngPosition =
-        LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
-
-    CameraPosition cameraPosition =
-        CameraPosition(target: latLngPosition, zoom: 14);
-
-    newGoogleMapController!
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    String humanReadableAddress =
-        await AssistantMethods.searchAddressForGeographicCoOrdinates(
-            userCurrentPosition!, context);
-    print("user address = " + humanReadableAddress);
-    try {
-      userName = gUserModelCurrentInfo!.name!;
-      userEmail = gUserModelCurrentInfo!.email!;
-    } catch (e) {
-      print(e.toString());
-    }
-
-    // initializeGeoFireListener();
-    AssistantMethods.readTripsKeysForOnlineUser(context);
   }
 
   saveRideRequestInformation() {
@@ -729,7 +733,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return SafeArea(
       child: Scaffold(
-        key: sKey,
+        key: scaffoldKey,
         drawer: SizedBox(
           width: 265,
           child: Theme(
@@ -775,7 +779,7 @@ class _MainScreenState extends State<MainScreen> {
               child: GestureDetector(
                 onTap: () {
                   if (openNavigationDrawer) {
-                    sKey.currentState!.openDrawer();
+                    scaffoldKey.currentState!.openDrawer();
                   } else {
                     //restart-refresh-minimize app progmatically
                     Navigator.pop(context);
@@ -814,101 +818,95 @@ class _MainScreenState extends State<MainScreen> {
                     child: Column(
                       children: [
                         //from
-                        InkWell(
-                          onTap: () {
-                            Directions? directions2 = Directions();
-                            directions2.locationName = '';
-                            context
-                                .read<AppInfo>()
-                                .updateDropOffLocationAddress(directions2);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (c) => SearchPlacesScreen(
-                                  orgOrDes: 'origin',
-                                ),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              const Icon(
+                        Row(
+                          children: [
+                            InkWell(
+                    onTap: ()async{
+
+                            await  locateUserPositionAddress();
+                              print('hello');
+                             // context.watch<AppInfo>().userPickUpLocation!.locationName='hello';
+                              },
+                              child: const Icon(
                                 Icons.add_location,
                                 color: Colors.red,
                               ),
-                              const SizedBox(
-                                width: 12.0,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "From",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                  ),
-                                  Text(
-                                    Provider.of<AppInfo>(context)
-                                                .userPickUpLocation !=
-                                            null
-                                        ? (Provider.of<AppInfo>(context)
-                                                    .userPickUpLocation!
-                                                    .locationName!)
-                                                .substring(
-                                                    0,
-                                                    Provider.of<AppInfo>(
-                                                                    context)
-                                                                .userPickUpLocation!
-                                                                .locationName!
-                                                                .toString()
-                                                                .length >
-                                                            40
-                                                        ? 40
-                                                        : Provider.of<AppInfo>(
-                                                                context)
-                                                            .userPickUpLocation!
-                                                            .locationName!
-                                                            .toString()
-                                                            .length) +
-                                            "..."
-                                        : "not getting address",
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                              /*const SizedBox(
-                                width: 20.0,
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  //go to search places screen
-                                  var responseFromSearchScreen = await Navigator.push(
-                                      context, MaterialPageRoute(builder: (c) => SearchPlacesScreen()));
+                            ),
+                          //  const SizedBox( width: 12.0),
+                            InkWell(
+                              onTap: () {
 
-                                  if (responseFromSearchScreen == "obtainedDropoff") {
-                                    setState(() {
-                                      openNavigationDrawer = false;
-                                    });
+                                polyLineSet.clear();
 
-                                    //draw routes - draw polyline
-                                    await drawPolyLineFromOriginToDestination();
-                                  }
-                                },
-                                child: Text(
-                                  'another address',
+                                Directions? directions2 = Directions();
+                                directions2.locationName = '';
+                                context
+                                    .read<AppInfo>()
+                                    .updateDropOffLocationAddress(directions2);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (c) => SearchPlacesScreen(
+                                      orgOrDes: 'origin',
+                                      lat: userCurrentPosition!.latitude,
+                                      long: userCurrentPosition!.longitude,
+
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 8, left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "From",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                    Text(context.read<AppInfo>().userPickUpLocation != null ? (context.read<AppInfo>().userPickUpLocation!.locationName!)
+                                        .substring(0,Provider.of<AppInfo>(context).userPickUpLocation!.locationName!.toString().length >
+                                        MediaQuery.of(context).size.width/9
+                                        ? 30: Provider.of<AppInfo>(context).userPickUpLocation!.locationName!.toString().length) + "..."
+                                          : "not getting address",
+                                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                                    ),
+                                  ],
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.purple,
-                                  //  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                                  // textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)
-                                ),
-                              )*/
-                            ],
-                          ),
+                              ),
+                            ),
+                            /*const SizedBox(
+                              width: 20.0,
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                //go to search places screen
+                                var responseFromSearchScreen = await Navigator.push(
+                                    context, MaterialPageRoute(builder: (c) => SearchPlacesScreen()));
+
+                                if (responseFromSearchScreen == "obtainedDropoff") {
+                                  setState(() {
+                                    openNavigationDrawer = false;
+                                  });
+
+                                  //draw routes - draw polyline
+                                  await drawPolyLineFromOriginToDestination();
+                                }
+                              },
+                              child: Text(
+                                'another address',
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.purple,
+                                //  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                // textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)
+                              ),
+                            )*/
+                          ],
                         ),
 
-                        const SizedBox(height: 10.0),
+                       // const SizedBox(height: 10.0),
 
                         const Divider(
                           height: 1,
@@ -927,12 +925,17 @@ class _MainScreenState extends State<MainScreen> {
                                 MaterialPageRoute(
                                     builder: (c) => SearchPlacesScreen(
                                           orgOrDes: 'des',
+                                      lat: userCurrentPosition!.latitude,
+                                      long: userCurrentPosition!.longitude,
                                         )));
+
+
 
                             if (responseFromSearchScreen == "obtainedDropoff") {
                               setState(() {
                                 openNavigationDrawer = false;
                               });
+
 
                               //draw routes - draw polyline
                               await drawPolyLineFromOriginToDestination();
@@ -991,6 +994,9 @@ class _MainScreenState extends State<MainScreen> {
                                 "Request a Ride",
                               ),
                               onPressed: () async {
+
+
+
                                 if (Provider.of<AppInfo>(context, listen: false)
                                             .userDropOffLocation !=
                                         null &&
@@ -1025,9 +1031,9 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                               onPressed: () {
                                 locateUserPositionAddress();
-                                getSortedDriver();
+                               /* getSortedDriver();
                                 saveRideRequestInformation();
-                                driverLifeTimePosition(driverInfo);
+                                driverLifeTimePosition(driverInfo);*/
                                 /* setState(() {
                                   searchLocationContainerHeight = 10;
                                 });*/
@@ -1257,11 +1263,11 @@ class _MainScreenState extends State<MainScreen> {
     List<PointLatLng> decodedPolyLinePointsResultList =
         pPoints.decodePolyline(directionDetailsInfo!.e_points!);
 
-    pLineCoOrdinatesList.clear();
+    pathPointsCoordinatesList.clear();
 
     if (decodedPolyLinePointsResultList.isNotEmpty) {
       decodedPolyLinePointsResultList.forEach((PointLatLng pointLatLng) {
-        pLineCoOrdinatesList
+        pathPointsCoordinatesList
             .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
       });
     }
@@ -1270,12 +1276,14 @@ class _MainScreenState extends State<MainScreen> {
 
     setState(() {
       Polyline polyline = Polyline(
-        color: Colors.purpleAccent,
+        color: Colors.black,
         polylineId: const PolylineId("PolylineID"),
         jointType: JointType.round,
-        points: pLineCoOrdinatesList,
+        points: pathPointsCoordinatesList,
         startCap: Cap.roundCap,
         endCap: Cap.roundCap,
+        width: 3,
+
         geodesic: true,
       );
 
@@ -1304,9 +1312,9 @@ class _MainScreenState extends State<MainScreen> {
 
     CameraPosition cameraPosition =
         CameraPosition(target: destinationLatLng, zoom: 18);
-/*
+
     newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    newGoogleMapController!.animateCamera(CameraUpdate.newLatLngBounds(boundsLatLng, 65));*/
+    newGoogleMapController!.animateCamera(CameraUpdate.newLatLngBounds(boundsLatLng, 65));
 
     Marker originMarker = Marker(
       markerId: const MarkerId("originID"),
