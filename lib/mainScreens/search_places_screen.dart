@@ -10,7 +10,7 @@ class SearchPlacesScreen extends StatefulWidget {
   final String? orgOrDes;
   final double? lat;
   final double? long;
-  SearchPlacesScreen({this.orgOrDes, this.lat, this. long});
+  SearchPlacesScreen({this.orgOrDes, this.lat, this.long});
 
   @override
   _SearchPlacesScreenState createState() => _SearchPlacesScreenState();
@@ -20,18 +20,14 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   List<PredictedPlaces> placesPredictedList = [];
   List<NearbyLocation> nearbyLocationList = [];
 
-
-
-
-
-  void findNearBySearch()async{
+  void findNearBySearch() async {
     String urlNearbyLocationSearch =
         "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${widget.lat}, ${widget.long}&radius=300&key=AIzaSyCNUi_diHn9j-5e7qiZsJyzX-OCnDVFEcY";
     // var nearbyLocationSearch = await RequestAssistant.receiveRequest(urlNearbyLocationSearch);
 
-    try{
+    try {
       var responseNearBySearch =
-      await RequestAssistant.receiveRequest(urlNearbyLocationSearch);
+          await RequestAssistant.receiveRequest(urlNearbyLocationSearch);
       if (responseNearBySearch["status"] == "OK") {
         var nearByPlaces = responseNearBySearch["results"];
 
@@ -44,22 +40,28 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           //nearByLocationList.removeLast();
           nearbyLocationList = nearByLocationList;
         });
-      }
-      else {
+      } else {
         setState(() {
           placesPredictedList.clear();
         });
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
-
   }
 
   void findPlaceAutoCompleteSearch(String inputText) async {
 
-    if (inputText.length > 0) //2 or more than 2 input characters
+    if(inputText.isEmpty) {
+      findNearBySearch();
+    }
+    else{
+      setState(() {
+        nearbyLocationList.clear();
+      });
+    }
+
+    if (inputText.length > 2) //2 or more than 2 input characters
 
     {
       placesPredictedList = [];
@@ -95,8 +97,14 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     findNearBySearch();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+   // findNearBySearch();
 
     return SafeArea(
       child: Scaffold(
@@ -105,7 +113,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           children: [
             //search place ui
             Container(
-             // height: 160,
+              // height: 160,
               decoration: const BoxDecoration(
                 color: Colors.black54,
                 boxShadow: [
@@ -186,57 +194,81 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
               ),
             ),
 
-            //display place predictions result
-            if (placesPredictedList.isNotEmpty)
-              Expanded(
-                child: ListView.separated(
-                  itemCount: placesPredictedList.length,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return PlacePredictionTileDesign(
-                      predictedPlaces: placesPredictedList[index],
-                      orgOrDes: widget.orgOrDes,
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 1,
-                      color: Colors.white,
-                      thickness: 1,
-                    );
-                  },
-                ),
-              )
-            else if (nearbyLocationList.isNotEmpty)
+            Expanded(
+              child: Column(
+                children: [
+                 const  SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        'اختر الموقع على الخريطه',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),const  SizedBox(
+                    height: 30,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'اقرب نقطة دالة',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
 
-              Expanded(
-                child: ListView.separated(
+                      ),
+                    ),
+                  ),
+                  if (placesPredictedList.isNotEmpty)
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: placesPredictedList.length,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return PlacePredictionTileDesign(
+                            predictedPlaces: placesPredictedList[index],
+                            orgOrDes: widget.orgOrDes,
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 1,
+                            color: Colors.white,
+                            thickness: 1,
+                          );
+                        },
+                      ),
+                    )
 
-
-                  itemCount: nearbyLocationList.length,
-                //  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return PlaceNearbyTitle(
-                      nearbyPleaces: nearbyLocationList[index],
-                      orgOrDes: widget.orgOrDes,
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 1,
-                      color: Colors.white,
-                      thickness: 1,
-                    );
-                  },
-                ),
-              )
-
-            else
-              const Padding(
-                padding: EdgeInsets.only(top: 28.0),
-                child: Text('type to search',
-                    style: TextStyle(color: Colors.white)),
+                  // إظهار اقرب نقطة دالة
+                  else if (nearbyLocationList.isNotEmpty)
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: nearbyLocationList.length,
+                        physics: const ClampingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return PlaceNearbyTitle(
+                            nearbyPleaces: nearbyLocationList[index],
+                            orgOrDes: widget.orgOrDes,
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 1,
+                            color: Colors.white,
+                            thickness: 1,
+                          );
+                        },
+                      ),
+                    )
+                  else
+                    const Padding(
+                      padding: EdgeInsets.only(top: 28.0),
+                      child: Text('type to search',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                ],
               ),
+            ),
+
+            //display place predictions result
           ],
         ),
       ),
